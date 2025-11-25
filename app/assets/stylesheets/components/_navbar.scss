@@ -46,7 +46,8 @@
   vertical-align: middle;
 
   &:hover {
-    background-color: #7f00e7;
+    background-color: $purple;
+    color: $pink;
     text-decoration: none;
   }
 }

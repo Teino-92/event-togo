@@ -1,7 +1,11 @@
+body {
+  background-color: $blue;
+}
+
 .card-category {
   background-size: cover;
   background-position: center;
-  height: 450px;
+  height: 500px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -12,7 +16,7 @@
   text-shadow: 2px 2px 8px #000000;
   border-radius: 5px;
   box-shadow: 0 0 15px rgba(0,0,0,0.2);
-  background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), image-url("fotobanner.png");
+  background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), image-url("banner.png");
 }
 
 h5 {
