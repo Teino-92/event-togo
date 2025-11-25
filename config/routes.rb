@@ -1,7 +1,4 @@
 Rails.application.routes.draw do
-  get 'users/new'
-  get 'users/create'
-  get 'users/show'
   devise_for :users
   root to: "pages#home"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
@@ -10,12 +7,10 @@ Rails.application.routes.draw do
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check
 
-  # Defines the root path route ("/")
-  # root "posts#index"
-
-  get  "signup", to: "users#new"
-  post "signup", to: "users#create"
-
-  resources :users, only:  [:new, :create, :show]
-
+  resources :plans, only: [:index, :show, :new, :create,:update] do
+    resources :chats, only: :create
+  end
+  resources :chats, only: :show do
+    resources :messages, only: :create
+  end
 end
