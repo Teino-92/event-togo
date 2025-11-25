@@ -3,39 +3,35 @@
     <%= link_to root_path, class: "navbar-brand" do %>
       <%= image_tag "logo.png", alt: "Logo"  %>
     <% end %>
-      <h1>Event to go</h1>
+    <h1>Event to go</h1>
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto">
-        <%# if user_signed_in? %>
-          <li class="nav-item active">
-            <%= link_to "Log in", new_user_session_path, class: "nav-link" %>
 
-          </li>
-          <li class="nav-item">
-            <%= link_to "Sign up", new_user_registration_path, class: "nav-link" %>
-
-          </li>
+        <% if user_signed_in? %>
           <li class="nav-item dropdown">
             <%= image_tag "account.jpg", class: "avatar dropdown-toggle", id: "navbarDropdown", data: { bs_toggle: "dropdown" }, 'aria-haspopup': true, 'aria-expanded': false %>
             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-              <%# <%= link_to "Action", "#", class: "dropdown-item" %>
               <%= link_to "See my plans", "#", class: "dropdown-item" %>
-              <%= link_to "Log out", destroy_user_session_path, class: "dropdown-item", data: {turbo_method: :delete} %>
-
-              <%# link_to "Log out", destroy_user_session_path, class: "dropdown-item", data: {turbo_method: :delete} %>
+              <%= link_to "Log out", destroy_user_session_path, class: "dropdown-item", data: { turbo_method: :delete } %>
             </div>
           </li>
-        <%# else %>
-          <!--li class="nav-item"-->
-            <%#= link_to "Login", new_user_session_path, class: "nav-link" %>
-          <!--/li-->
-        <%# end %>
+
+        <% else %>
+          <li class="nav-item active">
+            <%= link_to "Log in", new_user_session_path, class: "nav-link" %>
+          </li>
+          <li class="nav-item">
+            <%= link_to "Sign up", new_user_registration_path, class: "nav-link" %>
+          </li>
+        <% end %>
+
       </ul>
     </div>
   </div>
 </div>
+
