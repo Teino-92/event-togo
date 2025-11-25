@@ -9,7 +9,7 @@ class CreatePlans < ActiveRecord::Migration[7.1]
       t.integer :number_persons
       t.string :city
       t.string :context
-      t.integer :lenght_event
+      t.string :event_lenght
 
       t.timestamps
     end
