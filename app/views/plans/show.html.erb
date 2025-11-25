@@ -14,9 +14,13 @@
 </div>
 
 <div class="division-show">
-    <p><%= @plan.roadmap %></p>
+  <h2>Your plan:</h2>
+    <p><%= raw(render_markdown(@plan.roadmap)) %></p>
     </div>
+    <div class="d-flex" style="justify-content: space-between">
 <%= link_to "Back", plans_path, class: "button-box" %>
 <%= link_to "Edit", "#", class: "button-box" %>
+<%= link_to "Delete", "#", class: "button-box" %>
+</div>
 
 </div>
