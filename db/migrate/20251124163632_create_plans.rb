@@ -10,6 +10,7 @@ class CreatePlans < ActiveRecord::Migration[7.1]
       t.string :city
       t.string :context
       t.string :event_lenght
+      t.date :roadmap_date
 
       t.timestamps
     end
