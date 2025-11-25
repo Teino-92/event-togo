@@ -13,12 +13,7 @@
     <p class="alert"><%= alert %></p>
 
   <body>
-   <%= link_to "Skip to main content", "#main-content", class: "visually-hidden-focusable" %>
-  <header>
-    <%= render "shared/navbar" %> <!-- 👈 Add this for navbar -->
-  </header>
-
-  <main id="main-content">
+    <%= render "components/navbar" %>
     <%= yield %>
   </main>
   </body>
