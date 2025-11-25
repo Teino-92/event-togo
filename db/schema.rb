@@ -24,7 +24,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_24_164540) do
 
   create_table "messages", force: :cascade do |t|
     t.bigint "chat_id", null: false
-    t.string "content"
+    t.text "content"
     t.string "role"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -40,7 +40,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_24_164540) do
     t.integer "number_persons"
     t.string "city"
     t.string "context"
-    t.integer "lenght_event"
+    t.string "event_lenght"
+    t.date "roadmap_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_plans_on_user_id"
