@@ -4,7 +4,7 @@ class PlansController < ApplicationController
   end
 
   def new
-    @plan = Plan.new
+    @plans = Plan.new
   end
 
   def create
@@ -35,7 +35,7 @@ class PlansController < ApplicationController
 
       response = ruby_llm_chat.
         with_instructions(instructions)
-        
+
 
       @chat.messages.create!(
         role: "assistant",
