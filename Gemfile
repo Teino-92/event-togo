@@ -77,3 +77,7 @@ group :test do
 end
 
 gem "ostruct"
+
+gem "kramdown"
+gem "rouge"
+gem "kramdown-parser-gfm"
