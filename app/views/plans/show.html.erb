@@ -18,11 +18,11 @@
       <h2>Your plan:</h2>
       <p><%= raw(render_markdown(@plan.roadmap)) %></p>
   </div>
+<% end %>
   <div class="d-flex" style="justify-content: space-between">
        <%= link_to "Back", plans_path, class: "button-box" %>
        <%= link_to "Edit", "#", class: "button-box" %>
        <%= link_to "Delete", "#", class: "button-box" %>
   </div>
-<% end %>
 
 </div>
