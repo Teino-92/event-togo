@@ -1,20 +1,15 @@
-<%= simple_form_for @plans do |f| %>
-<%= f.input :theme, label: 'Category', required: true, placeholder: "Choose from the list", collection: ['couple', 'family', 'friends', 'solo']%>
-<%= f.input :number_persons, label: 'How many people', required: true, placeholder "1,2,3..." %>
-<%= f.input :city, label 'enter the city', required: true, placeholder 'New York' %>
-<%= f.input :context, label 'describe your need', required: true, placeholder 'I would like to organise a night out with a couple of friends...' %>
-<%= f.input :event_lenght, label 'Time duration', required: true, placeholder 'Choose from the list', collection: ['Morning', 'Afternoon', 'Evening', 'half-day', 'Day'] %>
+<div class="box my-5" >
+  <%= simple_form_for @plans do |f| %>
+    <%= f.input :theme, label: 'Category', required: true, prompt: "Choose from the list", collection: ['Couple', 'Family', 'Friends', 'Solo']%>
+    <%= f.input :number_persons, label: 'How many people', required: true, placeholder: "1,2,3..." %>
+    <%= f.input :city, label: 'enter the city', required: true, placeholder: 'New York' %>
+    <%= f.input :context, label:  'describe your need', required: true, placeholder: 'I would like to organise a night out with a couple of friends...' %>
+    <%= f.input :event_lenght, label: 'Time duration', required: true, prompt: 'Choose from the list', collection: ['Morning', 'Afternoon', 'Evening', 'Day', 'Week-end'] %>
+    <%= f.input :roadmap_date, label: 'When is your event happening', required: true, placeholder: '2025/11/31' %>
+    <%= f.button :submit, 'Ask to AI', class: 'button-box'%>
+  <%end%>
+</div>
 
 
 
 
-
-
-
-
-
-
-
-
-
-#:theme, :number_persons, :city, :context, :event_lenght, :roadmap_date

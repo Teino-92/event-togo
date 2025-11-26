@@ -23,12 +23,17 @@ class PlansController < ApplicationController
     end
   end
 
+<<<<<<< HEAD
   def update
     if @plan.update(plan_params)
       redirect_to @plan, notice: "Plan mis à jour."
     else
       render :show, status: :unprocessable_entity
     end
+=======
+  def show
+    @plan = Plan.find(params[:id])
+>>>>>>> e2908a2f48ea5a6ab30d63baa19bc7f6065bd3dd
   end
 
   private
