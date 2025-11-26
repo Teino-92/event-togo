@@ -1,11 +1,13 @@
-<div class="box my-5" >
+<div class="box-form my-5" >
+  <h1>Start your journey</h1>
   <%= simple_form_for @plans do |f| %>
     <%= f.input :theme, label: 'Category', required: true, prompt: "Choose from the list", collection: ['Couple', 'Family', 'Friends', 'Solo']%>
     <%= f.input :number_persons, label: 'How many people', required: true, placeholder: "1,2,3..." %>
-    <%= f.input :city, label: 'enter the city', required: true, placeholder: 'New York' %>
-    <%= f.input :context, label:  'describe your need', required: true, placeholder: 'I would like to organise a night out with a couple of friends...' %>
+    <%= f.input :city, label: 'Enter the city', required: true, placeholder: 'New York' %>
+    <%= f.input :context, label:  'Describe your need', required: true, placeholder: 'I would like to organise a night out with a couple of friends...' %>
     <%= f.input :event_lenght, label: 'Time duration', required: true, prompt: 'Choose from the list', collection: ['Morning', 'Afternoon', 'Evening', 'Day', 'Week-end'] %>
     <%= f.input :roadmap_date, html5: true, label: 'When is your event happening', required: true, placeholder: '2025/11/31' %>
-    <%= f.button :submit, 'Ask to AI', class: 'button-box'%>
+
+    <div class="button-form"><%= f.button :submit, 'Ask to AI', class: 'button-box'%></div>
   <%end%>
 </div>

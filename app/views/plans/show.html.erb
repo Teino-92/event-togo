@@ -4,13 +4,13 @@
      </div>
      <div class="division-show">
        <h2>Details of your plan:</h2>
-       <p> Theme: <%= @plan.theme %></p>
-       <p>Price: <%= @plan.pricing %></p>
-       <p>Number of persons: <%= @plan.number_persons %></p>
-       <p>City: <%= @plan.city %></p>
-       <p>Context: <%= @plan.context %></p>
-       <p>Event duration: <%= @plan.event_lenght %></p>
-       <p>Your plan: <%= @plan.roadmap_date %></p>
+       <p> <%= @plan.theme %></p>
+       <p><%= @plan.pricing %></p>
+       <p> <%= @plan.number_persons %></p>
+       <p> <%= @plan.city %></p>
+       <p> <%= @plan.context %></p>
+       <p> <%= @plan.event_lenght %></p>
+       <p> <%= @plan.roadmap_date %></p>
       </div>
 
  <% if @plan.roadmap %>

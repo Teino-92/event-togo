@@ -1,0 +1,25 @@
+.messages-left {
+  text-align: left;
+  width: auto;
+}
+
+.message-wrapper.left .message-content {
+  position: relative;
+  background: #f1f1f1;
+  padding: 12px 16px;
+  border-radius: 12px;
+  max-width: 80%;
+  color: $purple;
+}
+
+.message-wrapper.left .message-content::after {
+  content: "";
+  position: absolute;
+  left: -10px;
+  top: 12px;
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-right: 10px solid #f1f1f1; /* colore del fumetto */
+}
