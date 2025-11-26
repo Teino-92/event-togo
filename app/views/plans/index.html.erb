@@ -1,0 +1,17 @@
+<div class="box">
+  <h3>My Roadmaps</h3>
+  <% if @plans.any? %>
+      <% @plans.each do |plan| %>
+        <%= link_to plan_path(plan), class: "card-plan m-3", style: "display: block; text-decoration: none; color: inherit;" do %>
+          <div style="display: flex; flex-direction: column; text-align: left;">
+            <h5><%= plan.title %></h5>
+            <p>Date:
+              <%= plan.roadmap_date.present? ? plan.roadmap_date.strftime("%d %B %Y") : "Not set" %>
+            </p>
+          </div>
+        <% end %>
+      <% end %>
+  <% else %>
+    <p>You haven't created any plan yet.</p>
+  <% end %>
+</div>

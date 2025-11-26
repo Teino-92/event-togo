@@ -4,7 +4,7 @@ class PlansController < ApplicationController
   end
 
   def new
-    @plans = Plan.new
+    @plan = Plan.new
   end
 
   def create
@@ -50,6 +50,15 @@ class PlansController < ApplicationController
     end
   end
 
+def update
+    if @plan.update(plan_params)
+      redirect_to @plan, notice: "Plan mis à jour."
+    else
+      render :show, status: :unprocessable_entity
+    end
+  end
+
+
   def show
     @plan = Plan.find(params[:id])
     @chats = @plan.chats.where(user: current_user)
@@ -79,6 +88,13 @@ class PlansController < ApplicationController
   end
 
   def plan_params
-    params.require(:plan).permit(:theme, :number_persons, :city, :context, :event_lenght, :roadmap_date)
+    params.require(:plan).permit(
+      :theme,
+      :number_persons,
+      :city,
+      :context,
+      :event_lenght,
+      :roadmap_dates
+    )
   end
 end

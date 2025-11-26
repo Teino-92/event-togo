@@ -1,26 +1,28 @@
+<div class="box">
+ <div class="show-title">
+       <p><%= @plan.title %></p>
+     </div>
+     <div class="division-show">
+       <h2>Details of your plan:</h2>
+       <p> Theme: <%= @plan.theme %></p>
+       <p>Price: <%= @plan.pricing %></p>
+       <p>Number of persons: <%= @plan.number_persons %></p>
+       <p>City: <%= @plan.city %></p>
+       <p>Context: <%= @plan.context %></p>
+       <p>Event duration: <%= @plan.event_lenght %></p>
+       <p>Your plan: <%= @plan.roadmap_date %></p>
+      </div>
 
- <div class="box">
-<div class="show-title">
-  <p><%= @plan.title %></p>
-</div>
-<div class="division-show">
-  <h2>Details of your plan:</h2>
-  <p> Theme: <%= @plan.theme %></p>
-  <p>Number of persons: <%= @plan.number_persons %></p>
-   <p>City: <%= @plan.city %></p>
-   <p>Context: <%= @plan.context %></p>
-    <p>Event duration: <%= @plan.event_lenght %></p>
-    <p>Your plan: <%= @plan.roadmap_date %></p>
-</div>
-
-<div class="division-show">
-  <h2>Your plan:</h2>
-    <p><%= raw(render_markdown(@plan.roadmap)) %></p>
-    </div>
-    <div class="d-flex" style="justify-content: space-between">
-<%= link_to "Back", plans_path, class: "button-box" %>
-<%= link_to "Edit", "#", class: "button-box" %>
-<%= link_to "Delete", "#", class: "button-box" %>
-</div>
+ <% if @plan.roadmap %>
+  <div class="division-show">
+      <h2>Your plan:</h2>
+      <p><%= raw(render_markdown(@plan.roadmap)) %></p>
+  </div>
+<% end %>
+  <div class="d-flex" style="justify-content: space-between">
+       <%= link_to "Back", plans_path, class: "button-box" %>
+       <%= link_to "Edit", "#", class: "button-box" %>
+       <%= link_to "Delete", "#", class: "button-box" %>
+  </div>
 
 </div>
