@@ -1,4 +1,5 @@
 class PlansController < ApplicationController
+
   def index
     @plans = Plan.all
   end
@@ -49,15 +50,6 @@ class PlansController < ApplicationController
       render :new, status: :unprocessable_entity
     end
   end
-
-def update
-    if @plan.update(plan_params)
-      redirect_to @plan, notice: "Plan mis à jour."
-    else
-      render :show, status: :unprocessable_entity
-    end
-  end
-
 
   def show
     @plan = Plan.find(params[:id])
