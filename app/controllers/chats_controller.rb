@@ -3,7 +3,7 @@ class ChatsController < ApplicationController
 
 def show
   @chat = Chat.find(params[:id])
-  @message = @chat.messages.new  # Crée un nouvel objet Message pour le formulaire
+  @message = @chat.messages.new  
   @plan = @chat.plan
   @chats = @plan.chats.where(user: current_user)
 end

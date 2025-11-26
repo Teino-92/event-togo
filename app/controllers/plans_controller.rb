@@ -23,7 +23,7 @@ class PlansController < ApplicationController
       TEXT
 
       @chat = @plan.chats.create!(
-        title: "New AI Roadmap"
+        title: "New Roadmap"
       )
 
       @message = @chat.messages.create!(
