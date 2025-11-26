@@ -1,6 +1,4 @@
 class PlansController < ApplicationController
-
-
   def index
     @plans = Plan.all
   end
@@ -10,47 +8,47 @@ class PlansController < ApplicationController
   end
 
   def create
-  @plan = Plan.new(plan_params)
-  @plan.user = current_user
+    @plan = Plan.new(plan_params)
+    @plan.user = current_user
 
-  if @plan.save
+    if @plan.save
+      first_prompt = <<~TEXT
+        Theme: #{@plan.theme}
+        City: #{@plan.city}
+        Context: #{@plan.context}
+        Number of persons: #{@plan.number_persons}
+        Event length: #{@plan.event_lenght}
+        Date: #{@plan.roadmap_date}
+      TEXT
 
-    first_prompt = <<~TEXT
-      Theme: #{@plan.theme}
-      City: #{@plan.city}
-      Context: #{@plan.context}
-      Number of persons: #{@plan.number_persons}
-      Event length: #{@plan.event_lenght}
-      Date: #{@plan.roadmap_date}
-    TEXT
+      @chat = @plan.chats.create!(
+        first_message: first_prompt,
+        title: "New AI Roadmap"
+      )
 
-    @chat = @plan.chats.create!(
-      first_message: first_prompt,
-      title: "New AI Roadmap"
-    )
+      @message = @chat.messages.create!(
+        role: "user",
+        content: first_prompt
+      )
 
-    @message = @chat.messages.create!(
-      role: "user",
-      content: first_prompt
-    )
+      ruby_llm_chat = RubyLLM.chat
+      ruby_llm_chat.add_message(@message)
 
-    ruby_llm_chat = RubyLLM.chat
-    ruby_llm_chat.add_message(@message)
+      response = ruby_llm_chat.with_instructions(instructions).ask(@message.content)
 
-    response = ruby_llm_chat.with_instructions(instructions).ask(@message.content)
+      @chat.messages.create!(
+        role: "assistant",
+        content: response.content
+      )
 
-    @chat.messages.create!(
-      role: "assistant",
-      content: response.content
-    )
+      @chat.generate_title_from_first_message
 
-    @chat.generate_title_from_first_message
-
-    redirect_to chat_path(@chat)
-  else
-    render :new, status: :unprocessable_entity
+      redirect_to chat_path(@chat)
+    else
+      render :new, status: :unprocessable_entity
+    end
   end
-end
+
   def show
     @plan = Plan.find(params[:id])
     @chats = @plan.chats.where(user: current_user)
