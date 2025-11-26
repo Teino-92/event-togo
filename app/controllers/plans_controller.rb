@@ -35,7 +35,8 @@ class PlansController < ApplicationController
       ruby_llm_chat.add_message(@message)
 
       response = ruby_llm_chat.
-        with_instructions(instructions)
+        with_instructions(instructions).
+        ask("Can you suggest a plan?")
 
 
       @chat.messages.create!(
