@@ -3,10 +3,7 @@ class PlansController < ApplicationController
   before_action :set_plan, only: [:show, :update]
 
   def index
-    @plans = Plan.all
-  end
-
-  def show
+    @plans = current_user.plans
   end
 
   def new
@@ -23,17 +20,17 @@ class PlansController < ApplicationController
     end
   end
 
-<<<<<<< HEAD
-  def update
+def update
     if @plan.update(plan_params)
       redirect_to @plan, notice: "Plan mis à jour."
     else
       render :show, status: :unprocessable_entity
     end
-=======
+  end
+
+
   def show
-    @plan = Plan.find(params[:id])
->>>>>>> e2908a2f48ea5a6ab30d63baa19bc7f6065bd3dd
+    @plan = current_user.plans.find(params[:id])
   end
 
   private
