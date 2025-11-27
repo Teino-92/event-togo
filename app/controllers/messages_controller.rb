@@ -37,25 +37,25 @@ class MessagesController < ApplicationController
   TEXT"
 
   def create
-    @chat = current_user.chats.find(params[:chat_id])
-    @plan = @chat.plan
+  @chat = current_user.chats.find(params[:chat_id])
+  @plan = @chat.plan
 
-    @message = Message.new(message_params)
-    @message.chat = @chat
-    @message.role = "user"
+  @message = Message.new(message_params)
+  @message.chat = @chat
+  @message.role = "user"
 
-    if @message.save
-      ruby_llm_chat = RubyLLM.chat
-      build_conversation_history
-      response = ruby_llm_chat.with_instructions(SYSTEM_PROMPT).ask(@message.content)
-      Message.create(role: "assistant", content: response.content, chat: @chat)
+  if @message.save
+    @ruby_llm_chat = RubyLLM.chat
+    build_conversation_history
+    response = @ruby_llm_chat.with_instructions(SYSTEM_PROMPT).ask(@message.content)
 
-      redirect_to chat_path(@chat)
-    else
+    Message.create(role: "assistant", content: response.content, chat: @chat)
+
+    redirect_to chat_path(@chat)
+  else
     render "chats/show", status: :unprocessable_entity
-    end
   end
-
+end
   private
 
   def message_params
