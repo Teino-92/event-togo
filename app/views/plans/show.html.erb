@@ -1,28 +1,44 @@
 <div class="box">
- <div class="show-title">
-       <p><%= @plan.title %></p>
-     </div>
-     <div class="division-show">
-       <h2>Details of your plan:</h2>
-       <p> <%= @plan.theme %></p>
-       <p><%= @plan.pricing %></p>
-       <p> <%= @plan.number_persons %></p>
-       <p> <%= @plan.city %></p>
-       <p> <%= @plan.context %></p>
-       <p> <%= @plan.event_lenght %></p>
-       <p> <%= @plan.roadmap_date %></p>
-      </div>
-
- <% if @plan.roadmap %>
-  <div class="division-show">
-      <h2>Your plan:</h2>
-      <p><%= raw(render_markdown(@plan.roadmap)) %></p>
+  <div class="show-title">
+    <h1><%= @plan.title %></h1>
   </div>
-<% end %>
+  <div class="division-show">
+    <h2>Details of your plan:</h2>
+    <p><%= @plan.theme %></p>
+    <p><%= @plan.pricing %></p>
+    <p><%= @plan.number_persons %> persons</p>
+    <p><%= @plan.city %></p>
+    <p><%= @plan.context %></p>
+    <p><%= @plan.event_lenght %></p>
+    <p><%= @plan.roadmap_date %></p>
+  </div>
+  <% if @plan.roadmap.present? %>
+    <div class="division-show">
+      <h2>Your Roadmap</h2>
+      <% roadmap = JSON.parse(@plan.roadmap) rescue nil %>
+      <% if roadmap %>
+        <% roadmap["roadmap"].each do |step| %>
+          <div class="roadmap_step">
+            <h3><%= step["time"] %> – <%= step["title"] %></h3>
+            <p><%= step["description"] %></p>
+            <% if step["options"].present? %>
+              <ul>
+                <% step["options"].each do |opt| %>
+                  <li><%= opt %></li>
+                <% end %>
+              </ul>
+            <% end %>
+          </div>
+        <% end %>
+      <% else %>
+        <p>Erreur: Roadmap invalide.</p>
+      <% end %>
+    </div>
+  <% end %>
   <div class="d-flex" style="justify-content: space-between">
        <%= link_to "Back", plans_path, class: "button-box" %>
-       <%= link_to "Edit", "#", class: "button-box" %>
-       <%= link_to "Delete", "#", class: "button-box" %>
+       <%= link_to "Edit", "#", class: "button-box button-edit" %>
+       <%= link_to "Delete", "#", class: "button-box button-delete" %>
   </div>
 
 </div>

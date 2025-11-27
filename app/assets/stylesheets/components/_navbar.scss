@@ -16,6 +16,7 @@
 }
 
 .nav-link {
+  color: $white;
   align-items: center;
   margin-right: 10px;
   background-color: $purple;
@@ -25,7 +26,6 @@
   box-sizing: border-box;
   cursor: pointer;
   display: inline-flex;
-  color: $white;
   font-family: 'Libre Franklin', sans-serif;
   font-style: italic;
   font-weight: 700;  font-size: 16px;
@@ -55,4 +55,8 @@
 h1 {
   font-size: 30px;
   color: $white;
+}
+
+.nav-item {
+  font-family: "Philosopher", "sans-serif";
 }

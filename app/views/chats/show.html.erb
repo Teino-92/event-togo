@@ -35,11 +35,11 @@
   <% end %>
 </div>
 </div>
-<div class="box mt-4">
+<div class="box-form mt-4">
   <div id="new_message_container">
     <%= simple_form_for [@chat, @message] do |f| %>
       <%= f.input :content, label: "Ask a question", required: true, placeholder: "" %>
-      <%= f.button :submit, 'Ask AI', class: 'btn btn-primary' %>
+      <div class="position"><%= f.button :submit, 'Ask AI', class: 'button-box' %></div>
     <% end %>
   </div>
 </div>

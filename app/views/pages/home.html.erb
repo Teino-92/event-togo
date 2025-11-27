@@ -1,8 +1,26 @@
+
+<!-- HEADER -->
+<header class="main_h">
 <%= render "shared/banner" %>
-<div class="box-form my-5">
+  <div class="row">
+
+  </div>
+</header>
+
+<!-- HERO SECTION -->
+<div class="hero">
+      <h1>Plan better. Enjoy more.</h1>
+       <p>Smart ideas for every occasion.</p>
+</div>
+
+<!-- TUO CODICE ORIGINALE -->
+<div class="box my-5 sec01">
   <h1>What is Event to go?</h1>
-  <p>  Discover a new way to enjoy your free time. Whether you’re in the mood for a special dinner, a relaxing bike ride through the city, a museum afternoon, or a cozy movie night, you’ll find ideas that are simple to choose and effortless to organize.
-We want to make it easy to say “yes” to something different — no stress, no endless searching, no indecision. Just clear, curated suggestions that fit your mood and your schedule.
-Every recommendation is designed to help you try something new or rediscover what’s already around you, turning ordinary moments into memories worth keeping.</p>
-   <%= link_to 'Start now!', new_plan_path(@plans), class: "button-box" %>
+  <p>
+    Discover a new way to enjoy your free time. Whether you’re in the mood for a special dinner, a relaxing bike ride through the city, a museum afternoon, or a cozy movie night, you’ll find ideas that are simple to choose and effortless to organize.
+    We want to make it easy to say “yes” to something different — no stress, no endless searching, no indecision. Just clear, curated suggestions that fit your mood and your schedule.
+    Every recommendation is designed to help you try something new or rediscover what’s already around you, turning ordinary moments into memories worth keeping.
+  </p>
+
+  <%= link_to 'Start now!', new_plan_path(@plans), class: "button-box" %>
 </div>

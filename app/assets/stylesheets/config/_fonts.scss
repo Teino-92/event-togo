@@ -2,8 +2,8 @@
 @import url('https://fonts.googleapis.com/css?family=Nunito:400,700|Work+Sans:400,700&display=swap');
 
 // Define fonts for body and headers
-$body-font: "Philosopher", "sans-serif";
-$headers-font: "Libre Franklin", "sans-serif";
+$body-font: "Philosopher", "sans-serif" !default;
+$headers-font: "Libre Franklin", "sans-serif" !default;
 
 // To use a font file (.woff) uncomment following lines
 // @font-face {
