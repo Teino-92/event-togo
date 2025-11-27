@@ -70,7 +70,7 @@ end
     return unless first_user_message
 
     ruby_llm_chat = RubyLLM.chat
-    
+
   end
 
 

@@ -1,0 +1,6 @@
+<%= simple_form_for [chat, chat.messages.new], data: { turbo_stream: "true" } do |f| %>
+  <%= f.input :content, label: "Ask a question", required: true, placeholder: "" %>
+  <div class="position">
+    <%= f.button :submit, 'Ask AI', class: 'button-box' %>
+  </div>
+<% end %>
