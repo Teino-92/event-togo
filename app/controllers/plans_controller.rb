@@ -57,6 +57,19 @@ class PlansController < ApplicationController
     @chats = @plan.chats.where(user: current_user)
   end
 
+  def save_roadmap
+    @plan = Plan.find(params[:id])
+    @chat = @plan.chats.last
+
+     roadmap_content = @chat.messages.where(role: "assistant").order(:created_at).pluck(:content).join("\n\n")
+
+     if @plan.update(roadmap: roadmap_content)
+      redirect_to plans_path, notice: "Roadmap saved successfully!"
+    else
+      redirect_to plans_path, alert: "Error saving roadmap."
+    end
+  end
+
   private
 
   def generate_title_from_first_message
