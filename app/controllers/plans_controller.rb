@@ -44,7 +44,7 @@ class PlansController < ApplicationController
         content: response.content
       )
 
-      @chat.generate_title_from_first_message
+      #@chat.generate_title_from_first_message
 
       redirect_to chat_path(@chat)
     else
@@ -81,7 +81,11 @@ class PlansController < ApplicationController
     <<~TEXT
       Your are an expert event planner. Based on the following details, create a detailed and engaging roadmap for the user.
       Provide suggestions for restaurants, activities, and places to visit that align with the user's preferences.
+      give only max 3 options.
       Make sure to consider the number of persons, the city, the context, the event length, and the date.
+      When the them is family don't forget to give options where kids will have a good time.
+      When is morning, it means from 8am to 12am, afternoon means from 2pm to 6pm, evening means from 6pm to 11pm.
+      You can also give a price range.
       Format the roadmap in a clear and organized manner, using sections and bullet points where appropriate.
       Here are the details:
       Theme: #{@plan.theme}
