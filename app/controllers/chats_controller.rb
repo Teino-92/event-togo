@@ -11,33 +11,33 @@ def show
   @plan = @chat.plan
   @chats = @plan.chats.where(user: current_user)
 
-#   llm_response = RubyLLM.chat
-#     .with_instructions("Extract the LAST roadmap from the following conversation and return ONLY valid JSON.
-#     JSON FORMAT:
-#     {
-#       \"title\": string,
-#       \"price_range\": string,
-#       \"roadmap\": [
-#         {
-#           \"time\": string,
-#           \"title\": string,
-#           \"description\": string,
-#           \"pricing\": string,
-#           \"options\": [string]
-#         }
-#       ]
-#     }
-#     Conversation:
-#     #{@chat.messages.map { |m| "#{m.role}: #{m.content}" }.join(' ')}")
-#     .ask("Return the LAST roadmap only.")
-#     .content
+ llm_response = RubyLLM.chat
+  .with_instructions("Extract the LAST roadmap from the following conversation and return ONLY valid JSON.
+    JSON FORMAT:
+     {
+       \"title\": string,
+       \"price_range\": string,
+       \"roadmap\": [
+         {
+           \"time\": string,
+           \"title\": string,
+           \"description\": string,
+           \"pricing\": string,
+           \"options\": [string]
+         }
+       ]
+     }
+     Conversation:
+     #{@chat.messages.map { |m| "#{m.role}: #{m.content}" }.join(' ')}")
+     .ask("Return the LAST roadmap only.")
+     .content
 
-#   @roadmap_json = JSON.parse(llm_response)
+   @roadmap_json = JSON.parse(llm_response)
 
-#   session[:last_roadmap] = @roadmap_json
+   session[:last_roadmap] = @roadmap_json
 
-# rescue JSON::ParserError
-#   @roadmap_json = nil
+ rescue JSON::ParserError
+   @roadmap_json = nil
 end
 
 private
