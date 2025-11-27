@@ -1,29 +1,76 @@
-<%= link_to "← #{@chat.plan.title}", plan_path(@chat.plan) %>
 
-<div class="chat_box">
-  <h1 id="chat_title" style="color: black" ><%= @chat.title %></h1>
-  <div id="messages">
-  <% @chat.messages.each do |message| %>
-    <% if message.role == "user" %>
-      <div class="d-flex justify-content-start mb-5">
-        <div class="bg-white px-3 pb-0 pt-3 rounded-pill">
-          <%= raw(render_markdown(message.content)) %>
-        </div>
-      </div>
-    <% elsif message.role == "assistant" %>
-      <div class="d-flex justify-content-start mb-5">
-        <div class="px-3 pb-0 pt-3">
-          <%= raw(render_markdown(message.content)) %>
-        </div>
-      </div>
-    <% end %>
+
+<!-- BOX TITOLO E BUDGET -->
+<div class="box">
+  <% if @roadmap_json.present? %>
+    <h1><%= @roadmap_json["title"] %></h1>
   <% end %>
 </div>
+
+<!-- BOX CHAT E ROADMAP -->
+<div class="box mt-4">
+
+  <div class="chat-box-right mt-4">
+    <% @chat.messages.each do |message| %>
+      <% if message.role == "user" %>
+        <div class="messages-right">
+          <div class="message-wrapper right">
+            <%= image_tag "account.jpg", class: "avatar"%>
+            <div class="message-content">
+              <%= raw(render_markdown(message.content)) %>
+            </div>
+          </div>
+        </div>
+  </div>
+
+        <div class="chat-box-left mt-4">
+      <% elsif message.role == "assistant" %>
+        <div class="messages-left">
+          <div class="message-wrapper left">
+            <%= image_tag "bot.png", class: "avatar"%>
+            <div class="message-content">
+              <%= raw(render_markdown(message.content)) %>
+      <% end %>
+    <% end %>
+
+  <!-- ROADMAP DETTAGLIATA -->
+  <% if @roadmap_json.present? %>
+    <div class="roadmap mt-4">
+      <% @roadmap_json["roadmap"].each do |step| %>
+        <div class="roadmap-step">
+          <h3><%= step["time"] %> – <%= step["title"] %></h3>
+          <p><%= step["description"] %></p>
+          <ul>
+            <% step["options"].each do |opt| %>
+              <li><%= opt %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+            </div>
+          </div>
+        </div>
+        </div>
+        </div>
+
+      <!-- BOTTONE SALVA ROADMAP -->
+      <div class="mt-4">
+        <%= button_to "Save Roadmap",
+              save_roadmap_plan_path(@plan),
+              method: :post,
+              class: "button-box" %>
+      </div>
+  <% end %>
+</div>
+
+<!-- FORM PER NUOVO MESSAGGIO -->
+<div class="box-form mt-4">
   <div id="new_message_container">
     <%= simple_form_for [@chat, @message] do |f| %>
       <%= f.input :content, label: "Ask a question", required: true, placeholder: "" %>
-      <%= f.button :submit, 'Ask AI', class: 'btn btn-primary' %>
+      <div class="position">
+        <%= f.button :submit, 'Ask AI', class: 'button-box' %>
+      </div>
     <% end %>
   </div>
-  <%= button_to "Save my roadmap", save_roadmap_chat_path(@chat), method: :post, class: "btn btn-primary" %>
 </div>

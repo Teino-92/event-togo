@@ -1,0 +1,21 @@
+.chat-box-left {
+  width: fit-content;
+  max-width: 80%;
+  height: fit-content;
+  text-align: center;
+  margin-right: auto;
+  margin-left: 5px;
+  padding: 1rem 1rem;
+
+
+  h3 {
+    font-size: 20px;
+    color: $pink;
+  }
+
+    h1, h2, h4, h5  {
+    font-size: 15px;
+    color: $pink;
+  }
+
+}

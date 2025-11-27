@@ -1,0 +1,21 @@
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.message-wrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.message-wrapper.right {
+  flex-direction: row-reverse;
+  text-align: right;
+}
+
+.message-wrapper.left {
+  flex-direction: row; 
+}
