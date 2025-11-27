@@ -25,5 +25,5 @@
       <%= f.button :submit, 'Ask AI', class: 'btn btn-primary' %>
     <% end %>
   </div>
-  <%= button_to "Save Roadmap", save_roadmap_plan_path(@plan), method: :post %>
+  <%= button_to "Save my roadmap", save_roadmap_chat_path(@chat), method: :post, class: "btn btn-primary" %>
 </div>

@@ -44,7 +44,7 @@ class PlansController < ApplicationController
         content: response.content
       )
 
-      @chat.generate_title_from_first_message
+      #@chat.generate_title_from_first_message
 
       redirect_to chat_path(@chat)
     else
