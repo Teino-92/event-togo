@@ -1,39 +1,50 @@
-
-
-<!-- BOX TITOLO E BUDGET -->
+<!-- BOX TITLE AND BUDGET -->
 <div class="box">
   <% if @roadmap_json.present? %>
     <h1><%= @roadmap_json["title"] %></h1>
   <% end %>
 </div>
 
-<!-- BOX CHAT E ROADMAP -->
+<!-- BOX CHAT AND ROADMAP -->
 <div class="box mt-4">
 
+  <!-- CHAT RIGHT (USER) -->
   <div class="chat-box-right mt-4">
     <% @chat.messages.each do |message| %>
+
       <% if message.role == "user" %>
         <div class="messages-right">
           <div class="message-wrapper right">
-            <%= image_tag "account.jpg", class: "avatar"%>
+            <%= image_tag "account.jpg", class: "avatar" %>
             <div class="message-content">
               <%= raw(render_markdown(message.content)) %>
             </div>
           </div>
         </div>
+      <% end %>
+
+    <% end %>
   </div>
 
-        <div class="chat-box-left mt-4">
-      <% elsif message.role == "assistant" %>
-        <div class="messages-left">
+
+  <!-- CHAT LEFT (ASSISTANT) -->
+  <div class="chat-box-left mt-4">
+      <% @chat.messages.each do |message| %>
+
+      <% if message.role == "assistant" %>
+    <div class="messages-left">
           <div class="message-wrapper left">
-            <%= image_tag "bot.png", class: "avatar"%>
+            <%= image_tag "bot.png", class: "avatar" %>
             <div class="message-content">
               <%= raw(render_markdown(message.content)) %>
+            </div>
+          </div>
       <% end %>
+
     <% end %>
 
-  <!-- ROADMAP DETTAGLIATA -->
+
+  <!-- ROADMAP -->
   <% if @roadmap_json.present? %>
     <div class="roadmap mt-4">
       <% @roadmap_json["roadmap"].each do |step| %>
@@ -47,27 +58,28 @@
           </ul>
         </div>
       <% end %>
-            </div>
-          </div>
-        </div>
-        </div>
-        </div>
-
-      <!-- BOTTONE SALVA ROADMAP -->
-      <div class="mt-4">
-        <%= button_to "Save Roadmap",
-              save_roadmap_plan_path(@plan),
-              method: :post,
-              class: "button-box" %>
-      </div>
+    </div>
+   </div>
+  </div>
   <% end %>
+
 </div>
 
-<!-- FORM PER NUOVO MESSAGGIO -->
+
+    <!-- SAVE BUTTON -->
+    <div class="mt-4">
+      <%= button_to "Save Roadmap",
+            save_roadmap_plan_path(@plan),
+            method: :post,
+            class: "button-box" %>
+    </div>
+</div>
+
+<!-- FORM NEW MESSAGE -->
 <div class="box-form mt-4">
   <div id="new_message_container">
     <%= simple_form_for [@chat, @message] do |f| %>
-      <%= f.input :content, label: "Ask a question", required: true, placeholder: "" %>
+      <%= f.input :content, label: "Ask a question", required: true %>
       <div class="position">
         <%= f.button :submit, 'Ask AI', class: 'button-box' %>
       </div>

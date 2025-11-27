@@ -8,10 +8,18 @@ background-color: $white;
 color: $purple;
 border-radius: 30px;
 box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+
 h1 {
   text-align: center;
   font-size: 40px;
   color: $pink;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: $purple;
+    outline: 0;
+    box-shadow: 0 0 0 .25rem #9C27B0;
 }
 
 label {
@@ -21,7 +29,9 @@ label {
 
 input, select {
   font-family: "Philosopher", "sans-serif";
-  color: grey;
+  color: #a0a0a0eb;
+
+
 }
 
 .position {
@@ -67,6 +77,5 @@ justify-content: center;
   color: $blue;
   box-shadow: $purple 0 0 0 3px, transparent 0 0 0 0;
 }
-
 }
 }
