@@ -1,0 +1,21 @@
+<div class="message <%= message.role %>" id="message_<%= message.id %>">
+  <% if message.role == "user" %>
+    <div class="messages-right">
+      <div class="message-wrapper right">
+        <%= image_tag "account.jpg", class: "avatar" %>
+        <div class="message-content">
+          <%= raw(render_markdown(message.content)) %>
+        </div>
+      </div>
+    </div>
+  <% else %>
+    <div class="messages-left">
+      <div class="message-wrapper left">
+        <%= image_tag "bot.png", class: "avatar" %>
+        <div class="message-content">
+          <%= raw(render_markdown(message.content)) %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
