@@ -42,4 +42,5 @@
       <div class="position"><%= f.button :submit, 'Ask AI', class: 'button-box' %></div>
     <% end %>
   </div>
+  <%= button_to "Save Roadmap", save_roadmap_plan_path(@plan), method: :post %>
 </div>

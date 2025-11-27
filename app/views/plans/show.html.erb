@@ -1,7 +1,19 @@
 <div class="box">
-  <div class="show-title">
-    <h1><%= @plan.title %></h1>
-  </div>
+ <div class="show-title">
+       <p><%= @plan.title %></p>
+     </div>
+     <div class="division-show">
+       <h2>Details of your plan:</h2>
+       <p>Theme: <%= @plan.theme %></p>
+       <p>Price: <%= @plan.pricing %></p>
+       <p>Number of persons: <%= @plan.number_persons %></p>
+       <p>City: <%= @plan.city %></p>
+       <p>Context: <%= @plan.context %></p>
+       <p>Event duration: <%= @plan.event_lenght %></p>
+       <p>Your plan: <%= @plan.roadmap_date %></p>
+      </div>
+
+ <% if @plan.roadmap %>
   <div class="division-show">
     <h2>Details of your plan:</h2>
     <p><%= @plan.theme %></p>
