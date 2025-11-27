@@ -37,12 +37,12 @@ class MessagesController < ApplicationController
   TEXT"
 
   def create
-  @chat = current_user.chats.find(params[:chat_id])
-  @plan = @chat.plan
+    @chat = current_user.chats.find(params[:chat_id])
+    @plan = @chat.plan
 
-  @message = Message.new(message_params)
-  @message.chat = @chat
-  @message.role = "user"
+    @message = Message.new(message_params)
+    @message.chat = @chat
+    @message.role = "user"
 
   if @message.save
     @ruby_llm_chat = RubyLLM.chat
@@ -51,7 +51,11 @@ class MessagesController < ApplicationController
 
     Message.create(role: "assistant", content: response.content, chat: @chat)
 
-    redirect_to chat_path(@chat)
+    respond_to do |format|
+      format.turbo_stream
+      format.html { redirect_to chat_path(@chat) }
+    end
+
   else
     render "chats/show", status: :unprocessable_entity
   end

@@ -1,0 +1,7 @@
+<%= turbo_stream.append("messages") do %>
+  <%= render @chat.messages.order(:created_at).last(2) %>
+<% end %>
+
+<%= turbo_stream.replace("new_message") do %>
+  <%= render "messages/form", chat: @chat %>
+<% end %>
