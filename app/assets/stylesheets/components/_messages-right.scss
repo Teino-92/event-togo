@@ -1,0 +1,24 @@
+.messages-right {
+  text-align: right;
+  width: auto;
+}
+
+.message-wrapper.right .message-content {
+  position: relative;
+  background: #3e007140;
+  padding: 10px 12px;
+  border-radius: 12px;
+  max-width: 80%;
+}
+
+.message-wrapper.right .message-content::after {
+  content: "";
+  position: absolute;
+  right: -10px;
+  top: 12px;
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-left: 10px solid #3e007140;
+}

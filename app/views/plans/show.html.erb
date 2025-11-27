@@ -13,11 +13,9 @@
     <p><%= @plan.event_lenght %></p>
     <p><%= @plan.roadmap_date %></p>
   </div>
-
   <% if @plan.roadmap.present? %>
     <div class="division-show">
       <h2>Your Roadmap</h2>
-
       <% roadmap = JSON.parse(@plan.roadmap) rescue nil %>
       <% if roadmap %>
         <% roadmap["roadmap"].each do |step| %>
@@ -37,13 +35,11 @@
       <% else %>
         <p>Erreur: Roadmap invalide.</p>
       <% end %>
-
     </div>
   <% end %>
-
   <div class="d-flex" style="justify-content: space-between">
-    <%= link_to "Back", plans_path, class: "button-box" %>
-    <%= link_to "Edit", "#", class: "button-box" %>
-    <%= link_to "Delete", "#", class: "button-box" %>
+       <%= link_to "Back", plans_path, class: "button-box" %>
+       <%= link_to "Edit", "#", class: "button-box button-edit" %>
+       <%= link_to "Delete", "#", class: "button-box button-delete" %>
   </div>
 </div>
