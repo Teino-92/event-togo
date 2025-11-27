@@ -1,7 +1,7 @@
 class PlansController < ApplicationController
 
   def index
-    @plans = Plan.all
+    @plans = Plan.where(user: current_user).where.not(roadmap: nil)
   end
 
   def new
@@ -22,29 +22,14 @@ class PlansController < ApplicationController
         Date: #{@plan.roadmap_date}
       TEXT
 
-      @chat = @plan.chats.create!(
-        title: "New Roadmap"
-      )
+      @chat = @plan.chats.create!(title: "New Roadmap")
 
-      @message = @chat.messages.create!(
-        role: "user",
-        content: first_prompt
-      )
+      @message = @chat.messages.create!(role: "user", content: first_prompt)
 
       ruby_llm_chat = RubyLLM.chat
       ruby_llm_chat.add_message(@message)
 
-      response = ruby_llm_chat.
-        with_instructions(instructions).
-        ask("Can you suggest a plan?")
-
-
-      @chat.messages.create!(
-        role: "assistant",
-        content: response.content
-      )
-
-      #@chat.generate_title_from_first_message
+      response = ruby_llm_chat.with_instructions(instructions).ask("Can you suggest a plan?")
 
       redirect_to chat_path(@chat)
     else
@@ -58,43 +43,79 @@ class PlansController < ApplicationController
   end
 
   def save_roadmap
-    @plan = Plan.find(params[:id])
-    @chat = @plan.chats.last
+  @plan = Plan.find(params[:id])
 
-     roadmap_content = @chat.messages.where(role: "assistant").order(:created_at).pluck(:content).join("\n\n")
+  roadmap_data = session[:last_roadmap]
 
-     if @plan.update(roadmap: roadmap_content)
-      redirect_to plans_path, notice: "Roadmap saved successfully!"
-    else
-      redirect_to plans_path, alert: "Error saving roadmap."
-    end
+  unless roadmap_data.present?
+    redirect_to chat_path(@plan.chats.last), alert: "No roadmap to save."
+    return
   end
+
+  @plan.update!(
+    title: roadmap_data["title"],
+    roadmap: roadmap_data.to_json,
+    roadmap_date: @plan.roadmap_date
+  )
+
+  session.delete(:last_roadmap)
+
+  redirect_to plans_path, notice: "Roadmap saved successfully!"
+end
 
   private
 
   def generate_title_from_first_message
+    first_user_message = @chat.messages.find_by(role: "user")
+    return unless first_user_message
 
+    ruby_llm_chat = RubyLLM.chat
+    
   end
 
 
   def instructions
     <<~TEXT
-      Your are an expert event planner. Based on the following details, create a detailed and engaging roadmap for the user.
-      Provide suggestions for restaurants, activities, and places to visit that align with the user's preferences.
-      give only max 3 options.
-      Make sure to consider the number of persons, the city, the context, the event length, and the date.
-      When the them is family don't forget to give options where kids will have a good time.
-      When is morning, it means from 8am to 12am, afternoon means from 2pm to 6pm, evening means from 6pm to 11pm.
-      You can also give a price range.
-      Format the roadmap in a clear and organized manner, using sections and bullet points where appropriate.
-      Here are the details:
-      Theme: #{@plan.theme}
-      City: #{@plan.city}
-      Context: #{@plan.context}
-      Number of persons: #{@plan.number_persons}
-      Event length: #{@plan.event_lenght}
-      Date: #{@plan.roadmap_date}
-    TEXT
+    You are an expert event planner. Based on the user's details, you will create a detailed and structured roadmap for their event.
+    - Generate a short catchy TITLE from the details.
+    - Generate a detailed ROADMAP.
+    - Give a maximum of 3 options per section.
+    - Suggest restaurants, activities, and places.
+    - Always consider:
+      - city
+      - context
+      - number of persons
+      - event length
+      - date
+    - If the theme is "family", include kid-friendly options.
+    - Time rules:
+      - Morning = 8am to 12pm
+      - Afternoon = 2pm to 6pm
+      - Evening = 6pm to 11pm
+    - Include a price range.
+    RULE:
+    You MUST return ONLY valid JSON.
+    NO text outside JSON.
+    NO markdown.
+    JSON FORMAT:
+    { "roadmap": [
+        {
+          "time": string,
+          "title": string,
+          "description": string,
+          "pricing": string,
+          "options": [string]
+        }
+      ]
+    }
+    User details:
+    Theme: #{@plan.theme}
+    City: #{@plan.city}
+    Context: #{@plan.context}
+    Number of persons: #{@plan.number_persons}
+    Event length: #{@plan.event_lenght}
+    Date: #{@plan.roadmap_date}
+  TEXT
   end
 
   def plan_params
