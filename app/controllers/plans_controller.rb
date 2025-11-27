@@ -31,6 +31,10 @@ class PlansController < ApplicationController
 
       response = ruby_llm_chat.with_instructions(instructions).ask("Can you suggest a plan?")
 
+      @chat.messages.create!(
+      role: "assistant",
+      content: response.content
+      )
       redirect_to chat_path(@chat)
     else
       render :new, status: :unprocessable_entity

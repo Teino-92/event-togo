@@ -14,7 +14,6 @@
   <% end %>
 
   <!-- ROADMAP DETTAGLIATA -->
-  <%# if @roadmap_json.present? %>
   <% if false %>
     <div class="roadmap mt-4">
       <% @roadmap_json["roadmap"].each do |step| %>
@@ -43,7 +42,6 @@
 <!-- FORM PER NUOVO MESSAGGIO -->
 <div class="box-form mt-4">
   <%= turbo_frame_tag "new_message" do %>
-    <%#= simple_form_for [@chat, @chat.messages.new], html: { data: { turbo_stream: "true" } } do |f| %>
     <%= render "messages/form", chat: @chat %>
   <% end %>
 </div>

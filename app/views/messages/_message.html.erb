@@ -1,4 +1,5 @@
 <div class="message <%= message.role %>" id="message_<%= message.id %>">
+
   <% if message.role == "user" %>
     <div class="messages-right">
       <div class="message-wrapper right">
@@ -8,14 +9,38 @@
         </div>
       </div>
     </div>
+
   <% else %>
     <div class="messages-left">
       <div class="message-wrapper left">
         <%= image_tag "bot.png", class: "avatar" %>
         <div class="message-content">
-          <%= raw(render_markdown(message.content)) %>
+
+          <% parsed_json = JSON.parse(message.content) rescue nil %>
+
+          <% if parsed_json && parsed_json["roadmap"] %>
+            <% parsed_json["roadmap"].each do |step| %>
+              <div class="roadmap-step">
+                <h3><%= step["time"] %> – <%= step["title"] %></h3>
+                <p><%= step["description"] %></p>
+
+                <% if step["options"].present? %>
+                  <ul>
+                    <% step["options"].each do |opt| %>
+                      <li><%= opt %></li>
+                    <% end %>
+                  </ul>
+                <% end %>
+              </div>
+            <% end %>
+
+          <% else %>
+            <%= raw(render_markdown(message.content)) %>
+          <% end %>
+
         </div>
       </div>
     </div>
   <% end %>
+
 </div>

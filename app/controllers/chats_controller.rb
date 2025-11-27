@@ -40,6 +40,22 @@ def show
    @roadmap_json = nil
 end
 
+def save_roadmap
+  @chat = Chat.find(params[:id])
+  @plan = @chat.plan
+
+  full_history = @chat.messages.order(:created_at).pluck(:content).join("\n")
+
+  ruby_llm_chat = RubyLLM.chat
+  response = ruby_llm_chat.with_instructions(SYSTEM_PROMPT).ask(full_history)
+
+  if @plan.update(roadmap: response.content)
+    redirect_to plans_path, notice: "Roadmap saved successfully!"
+  else
+    redirect_to chat_path(@chat), alert: "Error saving roadmap."
+  end
+end
+
 private
 
   def build_conversation_history
@@ -48,19 +64,4 @@ private
     end
   end
 
-  def save_roadmap
-    @chat = Chat.find(params[:id])
-    @plan = @chat.plan
-
-    full_history = @chat.messages.order(:created_at).pluck(:content).join("\n")
-
-    ruby_llm_chat = RubyLLM.chat
-    response = ruby_llm_chat.with_instructions(SYSTEM_PROMPT).ask(full_history)
-
-    if @plan.update(roadmap: response.content)
-      redirect_to plans_path, notice: "Roadmap saved successfully!"
-    else
-      redirect_to chat_path(@chat), alert: "Error saving roadmap."
-    end
-  end
 end
