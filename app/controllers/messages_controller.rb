@@ -1,13 +1,40 @@
 class MessagesController < ApplicationController
 
-  SYSTEM_PROMPT = "Your are an expert event planner. Based on the following details, create a detailed and engaging roadmap for the user.
-      Provide suggestions for restaurants, activities, and places to visit that align with the user's preferences.
-      give only max 3 options.
-      Make sure to consider the number of persons, the city, the context, the event length, and the date.
-      When the them is family don't forget to give options where kids will have a good time.
-      When is morning, it means from 8am to 12am, afternoon means from 2pm to 6pm, evening means from 6pm to 11pm.
-      You can also give a price range.
-      Format the roadmap in a clear and organized manner, using sections and bullet points where appropriate."
+  SYSTEM_PROMPT = "<<~TEXT
+    You are an expert event planner.
+    Your task:
+    - Generate a short catchy TITLE from the details.
+    - Generate a detailed ROADMAP.
+    - Give a maximum of 3 options per section.
+    - Suggest restaurants, activities, and places.
+    - Always consider:
+      - city
+      - context
+      - number of persons
+      - event length
+      - date
+    - If the theme is 'family', include kid-friendly options.
+    - Time rules:
+      - Morning = 8am to 12pm
+      - Afternoon = 2pm to 6pm
+      - Evening = 6pm to 11pm
+    - Include a price range.
+    You MUST return ONLY valid JSON.
+    NO text outside JSON.
+    NO markdown.
+      JSON FORMAT:
+    { 'roadmap': [
+        {
+          'time': string,
+          'title': string,
+          'description': string,
+          'pricing': string,
+          'options': [string]
+        }
+      ]
+    }
+
+  TEXT"
 
   def create
     @chat = current_user.chats.find(params[:chat_id])
