@@ -11,20 +11,6 @@
   <% end %>
 </div>
 
-<div id="typing" class="typing hidden">
-  <span></span><span></span><span></span>
-</div>
-    <div class="mt-4">
-      <%= button_to "Save Roadmap",
-      save_roadmap_chat_path(@chat),
-      method: :post,
-      class: "button-box" %>
-    </div>
-</div>
-<div class="box-form mt-4" style="width:70%">
-  <%= turbo_frame_tag "new_message" do %>
-    <%= render "messages/form", chat: @chat %>
-  <% end %>
   <% if @roadmap_json %>
     <div class="mt-4">
       <%= button_to "Save Roadmap",
@@ -32,5 +18,11 @@
         method: :post,
         class: "button-box" %>
     </div>
+  <% end %>
+
+</div>
+<div class="box-form mt-4" style="width:70%">
+  <%= turbo_frame_tag "new_message" do %>
+    <%= render "messages/form", chat: @chat %>
   <% end %>
 </div>
