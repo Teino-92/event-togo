@@ -10,6 +10,18 @@
   border-radius: 12px;
   max-width: 100%;
   color: $purple;
+  margin-top: 10px;
+
+  h3 {
+    font-size: 20px;
+    color: $pink;
+  }
+
+  h1, h2, h4, h5  {
+    font-size: 15px;
+    color: $pink;
+  }
+
 }
 
 .message-wrapper.left .message-content::after {
@@ -21,5 +33,6 @@
   height: 0;
   border-top: 10px solid transparent;
   border-bottom: 10px solid transparent;
-  border-right: 10px solid #f1f1f1; 
+  border-right: 10px solid #f1f1f1;
+
 }
