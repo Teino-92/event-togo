@@ -56,6 +56,29 @@ rescue JSON::ParserError
   @roadmap_json = nil
 end
 
+
+def save_roadmap
+  @chat = Chat.find(params[:id])
+  @plan = @chat.plan
+
+  last_assistant_message = @chat.messages.where(role: "assistant").last
+
+  unless last_assistant_message.present?
+    redirect_to chat_path(@chat), alert: "No roadmap to save."
+    return
+  end
+
+
+  @plan.update!(
+    title: @plan.title.presence,
+    roadmap: last_assistant_message.content,
+    roadmap_date: @plan.roadmap_date
+  )
+
+  redirect_to plans_path, notice: "Roadmap saved successfully!"
+end
+
+
 private
 
   def build_conversation_history
