@@ -1,6 +1,6 @@
 <div class="box">
  <div class="show-title">
-       <p><%= @plan.title %></p>
+       <h1><%= @plan.title %></h1>
      </div>
      <div class="division-show">
        <h2>Your roadmap idea:</h2>
@@ -36,6 +36,7 @@
     </div>
   <% else %>
     <p>Roadmap invalide.</p>
+  <% end %>
   <% end %>
   <div class="d-flex" style="justify-content: space-between; margin: 20px;">
        <%= link_to "Back", plans_path, class: "button-box" %>
