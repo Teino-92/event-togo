@@ -81,3 +81,5 @@ gem "ostruct"
 gem "kramdown"
 gem "rouge"
 gem "kramdown-parser-gfm"
+
+gem "openssl"

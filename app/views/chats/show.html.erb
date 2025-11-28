@@ -1,47 +1,42 @@
-<!-- BOX TITOLO E BUDGET -->
 <div class="box">
   <% if @roadmap_json.present? %>
     <h1><%= @roadmap_json["title"] %></h1>
   <% end %>
 </div>
 
-<!-- BOX CHAT E ROADMAP -->
 <div class="box mt-4">
 
-  <!-- Messages Turbo Frame -->
   <%= turbo_frame_tag "messages", data: { controller: "scroll", action: "turbo:before-stream-render->scroll#scroll" } do %>
     <%= render @chat.messages %>
   <% end %>
+</div>
 
-  <!-- ROADMAP DETTAGLIATA -->
-  <% if false %>
+<div class="box-form mt-4">
+  <%= turbo_frame_tag "new_message" do %>
+    <%= render "messages/form", chat: @chat %>
+  <% end %>
+  <% if @roadmap_json %>
+    <!--
     <div class="roadmap mt-4">
-      <% @roadmap_json["roadmap"].each do |step| %>
+      <%# @roadmap_json["roadmap"].each do |step| %>
         <div class="roadmap-step">
-          <h3><%= step["time"] %> – <%= step["title"] %></h3>
-          <p><%= step["description"] %></p>
+          <h3><%#= step["time"] %> – <%#= step["title"] %></h3>
+          <p><%#= step["description"] %></p>
           <ul>
-            <% step["options"].each do |opt| %>
-              <li><%= opt %></li>
-            <% end %>
+            <%# step["options"].each do |opt| %>
+              <li><%#= opt %></li>
+            <%# end %>
           </ul>
         </div>
-      <% end %>
+      <%# end %>
     </div>
+    -->
 
-    <!-- BOTTONE SALVA ROADMAP -->
     <div class="mt-4">
       <%= button_to "Save Roadmap",
       save_roadmap_chat_path(@chat),
       method: :post,
       class: "button-box" %>
     </div>
-  <% end %>
-</div>
-
-<!-- FORM PER NUOVO MESSAGGIO -->
-<div class="box-form mt-4">
-  <%= turbo_frame_tag "new_message" do %>
-    <%= render "messages/form", chat: @chat %>
   <% end %>
 </div>
