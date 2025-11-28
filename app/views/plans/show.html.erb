@@ -4,7 +4,7 @@
   </div>
 
   <div class="division-show">
-    <h2>Details of your plan:</h2>
+    <h2>Details of your plan</h2>
     <p><%= @plan.theme %></p>
     <p><%= @plan.pricing %></p>
     <p><%= @plan.number_persons %> persons</p>
@@ -37,9 +37,9 @@
       <% end %>
     </div>
   <% end %>
-  <div class="d-flex" style="justify-content: space-between">
+  <div class="d-flex" style="justify-content: space-between; margin: 20px;">
        <%= link_to "Back", plans_path, class: "button-box" %>
-       <%= link_to "Edit", "#", class: "button-box button-edit" %>
+       <%# <%= link_to "Edit", "#", class: "button-box button-edit" %>
        <%= link_to "Delete", "#", class: "button-box button-delete" %>
   </div>
 </div>
