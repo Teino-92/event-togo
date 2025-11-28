@@ -30,11 +30,13 @@ class PlansController < ApplicationController
       ruby_llm_chat.add_message(@message)
 
       response = ruby_llm_chat.with_instructions(instructions).ask("Can you suggest a plan?")
+      parsed_response = JSON.parse(response.content)
+      title = parsed_response["title"]
+      @plan.update(title: title) if title.present?
 
-      @chat.messages.create!(
-      role: "assistant",
-      content: response.content
-      )
+      roadmap = parsed_response.slice("roadmap")
+      @chat.messages.create!(role: "assistant", content: roadmap.to_json) if roadmap.present?
+
       redirect_to chat_path(@chat)
     else
       render :new, status: :unprocessable_entity
@@ -46,27 +48,7 @@ class PlansController < ApplicationController
     @chats = @plan.chats.where(user: current_user)
   end
 
-  def save_roadmap
-  @plan = Plan.find(params[:id])
-
-  roadmap_data = session[:last_roadmap]
-
-  unless roadmap_data.present?
-    redirect_to chat_path(@plan.chats.last), alert: "No roadmap to save."
-    return
-  end
-
-  @plan.update!(
-    title: roadmap_data["title"],
-    roadmap: roadmap_data.to_json,
-    roadmap_date: @plan.roadmap_date
-  )
-
-  session.delete(:last_roadmap)
-
-  redirect_to plans_path, notice: "Roadmap saved successfully!"
-end
-
+  
   private
 
   def generate_title_from_first_message
@@ -102,7 +84,9 @@ end
     NO text outside JSON.
     NO markdown.
     JSON FORMAT:
-    { "roadmap": [
+    {
+      "title": string,
+      "roadmap": [
         {
           "time": string,
           "title": string,
@@ -129,7 +113,7 @@ end
       :city,
       :context,
       :event_lenght,
-      :roadmap_dates
+      :roadmap_date
     )
   end
 end

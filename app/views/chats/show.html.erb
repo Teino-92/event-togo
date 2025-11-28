@@ -26,21 +26,11 @@
     <%= render "messages/form", chat: @chat %>
   <% end %>
   <% if @roadmap_json %>
-    <!--
-    <div class="roadmap mt-4">
-      <%# @roadmap_json["roadmap"].each do |step| %>
-        <div class="roadmap-step">
-          <h3><%#= step["time"] %> – <%#= step["title"] %></h3>
-          <p><%#= step["description"] %></p>
-          <ul>
-            <%# step["options"].each do |opt| %>
-              <li><%#= opt %></li>
-            <%# end %>
-          </ul>
-        </div>
-      <%# end %>
+    <div class="mt-4">
+      <%= button_to "Save Roadmap",
+        save_roadmap_chat_path(@chat),
+        method: :post,
+        class: "button-box" %>
     </div>
-    -->
-
   <% end %>
 </div>

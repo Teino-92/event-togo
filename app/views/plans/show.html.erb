@@ -1,45 +1,46 @@
 <div class="box">
-  <div class="show-title">
-    <h1><%= @plan.title %></h1>
-  </div>
+ <div class="show-title">
+       <p><%= @plan.title %></p>
+     </div>
+     <div class="division-show">
+       <h2>Your roadmap idea:</h2>
+       <p><%= @plan.theme %></p>
+       <p><%= @plan.pricing %></p>
+       <p><%= @plan.number_persons %></p>
+       <p><%= @plan.city %></p>
+       <p><%= @plan.context %></p>
+       <p><%= @plan.event_lenght %></p>
+       <p><%= @plan.roadmap_date %></p>
+      </div>
 
-  <div class="division-show">
-    <h2>Details of your plan</h2>
-    <p><%= @plan.theme %></p>
-    <p><%= @plan.pricing %></p>
-    <p><%= @plan.number_persons %> persons</p>
-    <p><%= @plan.city %></p>
-    <p><%= @plan.context %></p>
-    <p><%= @plan.event_lenght %></p>
-    <p><%= @plan.roadmap_date %></p>
-  </div>
-  <% if @plan.roadmap.present? %>
+ <% if @plan.roadmap.present? %>
+  <% roadmap_data = JSON.parse(@plan.roadmap) rescue nil %>
+  <% if roadmap_data && roadmap_data["roadmap"].is_a?(Array) %>
     <div class="division-show">
       <h2>Your Roadmap</h2>
-      <% roadmap = JSON.parse(@plan.roadmap) rescue nil %>
-      <% if roadmap %>
-        <% roadmap["roadmap"].each do |step| %>
-          <div class="roadmap_step">
-            <h3><%= step["time"] %> – <%= step["title"] %></h3>
-            <p><%= step["description"] %></p>
+      <% roadmap_data["roadmap"].each do |step| %>
+        <div class="roadmap_step">
+          <h3><%= step["time"] %> – <%= step["title"] %></h3>
+          <p><%= step["description"] %></p>
+          <p><strong>Price:</strong> <%= step["pricing"] %></p>
 
-            <% if step["options"].present? %>
-              <ul>
-                <% step["options"].each do |opt| %>
-                  <li><%= opt %></li>
-                <% end %>
-              </ul>
-            <% end %>
-          </div>
-        <% end %>
-      <% else %>
-        <p>Erreur: Roadmap invalide.</p>
+          <% if step["options"].present? %>
+            <ul>
+              <% step["options"].each do |opt| %>
+                <li><%= opt %></li>
+              <% end %>
+            </ul>
+          <% end %>
+        </div>
       <% end %>
     </div>
+  <% else %>
+    <p>Roadmap invalide.</p>
   <% end %>
   <div class="d-flex" style="justify-content: space-between; margin: 20px;">
        <%= link_to "Back", plans_path, class: "button-box" %>
        <%# <%= link_to "Edit", "#", class: "button-box button-edit" %>
        <%= link_to "Delete", "#", class: "button-box button-delete" %>
   </div>
+
 </div>
