@@ -50,7 +50,7 @@ def show
 
   @roadmap_json = JSON.parse(llm_response)
 
-  session[:last_roadmap] = @roadmap_json
+  # session[:last_roadmap] = @roadmap_json
 
 rescue JSON::ParserError
   @roadmap_json = nil
