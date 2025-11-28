@@ -6,7 +6,7 @@
       <%= link_to plan_path(plan), class: "card-plan m-3", style: "display: block; text-decoration: none; color: inherit;" do %>
         <div style="display: flex; flex-direction: column; text-align: left;">
           <h5><%= plan.title %></h5>
-          <p>Date: <%= plan.roadmap_date %> - <%= plan.city %></p>
+          <p><strong><%= plan.roadmap_date %> </strong> - <%= plan.city %></p>
         </div>
       <% end %>
     <% end %>
