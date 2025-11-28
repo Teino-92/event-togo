@@ -48,7 +48,7 @@ class PlansController < ApplicationController
     @chats = @plan.chats.where(user: current_user)
   end
 
-  
+
   private
 
   def generate_title_from_first_message
