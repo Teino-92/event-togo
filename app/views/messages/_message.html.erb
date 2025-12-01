@@ -1,46 +1,59 @@
-<div class="message <%= message.role %>" id="message_<%= message.id %>">
+<% if message.role == "user" || message.content.present? %>
+  <div class="message <%= message.role %>" id="message_<%= message.id %>">
 
-  <% if message.role == "user" %>
-    <div class="messages-right">
-      <div class="message-wrapper right">
-        <%= image_tag "account.jpg", class: "avatar" %>
-        <div class="message-content">
-          <%= raw(render_markdown(message.content)) %>
+    <% if message.role == "user" %>
+      <div class="messages-right">
+        <div class="message-wrapper right">
+          <%= image_tag "account.jpg", class: "avatar" %>
+          <div class="message-content">
+            <%= raw(render_markdown(message.content)) %>
+          </div>
         </div>
       </div>
-    </div>
 
-  <% else %>
-    <div class="messages-left">
-      <div class="message-wrapper left">
-        <%= image_tag "bot.png", class: "avatar" %>
-        <div class="message-content">
+    <% else %>
+      <div class="messages-left">
+        <div class="message-wrapper left">
+          <%= image_tag "bot.png", class: "avatar" %>
+          <div class="message-content">
 
-          <% parsed_json = JSON.parse(message.content) rescue nil %>
+            <% begin %>
+              <% parsed_json = JSON.parse(message.content) %>
 
-          <% if parsed_json && parsed_json["roadmap"] %>
-            <% parsed_json["roadmap"].each do |step| %>
-              <div class="roadmap-step">
-                <h3><%= step["time"] %> – <%= step["title"] %></h3>
-                <p><%= step["description"] %></p>
+              <% if parsed_json && parsed_json["roadmap"].is_a?(Array) %>
+                <% parsed_json["roadmap"].each do |step| %>
+                  <div class="roadmap-step">
+                    <h3><%= step["time"] %> – <%= step["title"] %></h3>
+                    <p><%= step["description"] %></p>
+                    <p><strong>Price:</strong> <%= step["pricing"] %></p>
 
-                <% if step["options"].present? %>
-                  <ul>
-                    <% step["options"].each do |opt| %>
-                      <li><%= opt %></li>
+                    <% if step["options"].present? && step["options"].is_a?(Array) %>
+                      <ul>
+                        <% step["options"].each do |opt| %>
+                          <li><%= opt %></li>
+                        <% end %>
+                      </ul>
                     <% end %>
-                  </ul>
+                  </div>
                 <% end %>
-              </div>
+
+              <% elsif parsed_json && parsed_json["error"] %>
+                <div class="alert alert-warning">
+                  <strong>Error:</strong> <%= parsed_json["error"] %>
+                </div>
+
+              <% else %>
+                <%= raw(render_markdown(message.content)) %>
+              <% end %>
+
+            <% rescue JSON::ParserError %>
+              <%= raw(render_markdown(message.content)) %>
             <% end %>
 
-          <% else %>
-            <%= raw(render_markdown(message.content)) %>
-          <% end %>
-
+          </div>
         </div>
       </div>
-    </div>
-  <% end %>
+    <% end %>
 
-</div>
+  </div>
+<% end %>

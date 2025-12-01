@@ -1,26 +1,58 @@
 <div class="box">
-  <% if @roadmap_json.present? %>
+  <% if @roadmap_json.present? && @roadmap_json["title"].present? %>
     <h1><%= @roadmap_json["title"] %></h1>
+  <% else %>
+    <h1><%= @plan.title || "Event Planning Chat" %></h1>
   <% end %>
+
+  <% if @plan.city.present? %>
+    <p style="color: #3F0071; font-size: 16px; margin: 10px 0;">
+      <i class="fas fa-map-marker-alt"></i> <%= @plan.city %> •
+      <i class="fas fa-calendar"></i> <%= @plan.roadmap_date&.strftime("%B %d, %Y") %>
+    </p>
+  <% end %>
+
+  <div style="margin-top: 20px;">
+    <%= link_to plans_path, class: "button-box button-small" do %>
+      <i class="fas fa-arrow-left"></i>&nbsp; Back to Plans
+    <% end %>
+  </div>
 </div>
 
-<div class="box mt-4" style="height:600px; width:80%; padding: 1px;">
-<div class="chat-box mt-4" style="overflow:scroll;">
-  <%= turbo_frame_tag "messages", data: { controller: "scroll", action: "turbo:before-stream-render->scroll#scroll" } do %>
-    <%= render @chat.messages %>
-  <% end %>
-</div>
+<div class="box mt-4" style="height:600px; width:80%; padding: 20px;" data-controller="chat">
+  <div class="chat-box mt-4" style="overflow:scroll; height: 450px;" id="chat-messages-container">
+    <div data-chat-target="messages">
+      <% if @chat.messages.any? %>
+        <%= render @chat.messages %>
+      <% else %>
+        <div class="text-center p-4" style="color: #3F0071;">
+          <i class="fas fa-robot" style="font-size: 48px; margin-bottom: 20px; color: #FB2576;"></i>
+          <p style="font-size: 18px;">Start a conversation to refine your event plan!</p>
+          <p style="font-size: 14px; margin-top: 10px;">Ask the AI to adjust times, change locations, or add specific preferences.</p>
+        </div>
+      <% end %>
+    </div>
+  </div>
 
-  <% if @roadmap_json %>
-    <div class="mt-4">
-      <%= button_to "Save Roadmap",
-        save_roadmap_chat_path(@chat),
+  <% if @roadmap_json.present? %>
+    <div style="text-align: center; margin-top: 20px; padding-top: 15px; border-top: 2px solid #F4F4F4;">
+      <%= button_to save_roadmap_chat_path(@chat),
         method: :post,
-        class: "button-box" %>
+        class: "button-box button-edit button-icon",
+        data: { turbo: false } do %>
+        <i class="fas fa-save"></i>
+        <span>Save This Roadmap</span>
+      <% end %>
+    </div>
+  <% elsif @chat.messages.where(role: "assistant").any? %>
+    <div style="text-align: center; margin-top: 20px; padding: 15px; background-color: #FFF8E7; border-radius: 10px;">
+      <p style="color: #3F0071; font-size: 14px; margin: 0;">
+        <i class="fas fa-info-circle"></i> Unable to extract roadmap. Please ask the AI to provide a structured roadmap.
+      </p>
     </div>
   <% end %>
-
 </div>
+
 <div class="box-form mt-4" style="width:70%">
   <%= turbo_frame_tag "new_message" do %>
     <%= render "messages/form", chat: @chat %>

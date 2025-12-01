@@ -1,16 +1,18 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  // connect() {
-  //   this.scrollToBottom()
-  // }
+  connect() {
+    this.scrollToBottom()
+  }
 
-  // scrollToBottom() {
-  //   this.element.scrollTop = this.element.scrollHeight
-  // }
+  scrollToBottom() {
+    this.element.scrollIntoView({ behavior: "smooth", block: "end" })
+  }
 
-  // scroll() {
-  //   this.scrollToBottom()
-  // }
+  scroll() {
+    setTimeout(() => {
+      this.scrollToBottom()
+    }, 100)
+  }
 }
 

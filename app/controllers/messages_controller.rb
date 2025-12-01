@@ -1,75 +1,67 @@
 class MessagesController < ApplicationController
-
-  SYSTEM_PROMPT = "<<~TEXT
-    You are an expert event planner.
-    Your task:
-    - Generate a short catchy TITLE from the details.
-    - Generate a detailed ROADMAP.
-    - Give a maximum of 3 options per section.
-    - Suggest restaurants, activities, and places.
-    - Always consider:
-      - city
-      - context
-      - number of persons
-      - event length
-      - date
-    - If the theme is 'family', include kid-friendly options.
-    - Time rules:
-      - Morning = 8am to 12pm
-      - Afternoon = 2pm to 6pm
-      - Evening = 6pm to 11pm
-    - Include a price range.
-    You MUST return ONLY valid JSON.
-    NO text outside JSON.
-    NO markdown.
-      JSON FORMAT:
-    { 'roadmap': [
-        {
-          'time': string,
-          'title': string,
-          'description': string,
-          'pricing': string,
-          'options': [string]
-        }
-      ]
-    }
-
-  TEXT"
+  before_action :set_chat
+  before_action :authorize_chat
 
   def create
-    @chat = current_user.chats.find(params[:chat_id])
+    @message = @chat.messages.build(message_params.merge(role: "user"))
     @plan = @chat.plan
 
-    @message = Message.new(message_params)
-    @message.chat = @chat
-    @message.role = "user"
+    if @message.save
+      process_message
+    else
+      render "chats/show", status: :unprocessable_entity
+    end
+  end
 
-  if @message.save
-    @ruby_llm_chat = RubyLLM.chat
-    build_conversation_history
-    response = @ruby_llm_chat.with_instructions(SYSTEM_PROMPT).ask(@message.content)
+  private
 
-    Message.create(role: "assistant", content: response.content, chat: @chat)
+  def set_chat
+    @chat = Chat.find(params[:chat_id])
+  end
 
+  def authorize_chat
+    plan = @chat.plan
+    redirect_to plans_path, alert: "Unauthorized access" unless plan.user == current_user
+  end
+
+  def process_message
+    generator = RoadmapGeneratorService.new(@plan)
+    result = generator.refine_roadmap(@chat.messages, @message.content)
+
+    if result[:error]
+      flash.now[:alert] = result[:error]
+      respond_with_error
+      return
+    end
+
+    create_assistant_message(result)
+    respond_with_success
+  rescue StandardError => e
+    Rails.logger.error("Message processing error: #{e.message}")
+    flash.now[:alert] = "Failed to process message. Please try again."
+    respond_with_error
+  end
+
+  def create_assistant_message(result)
+    content = result["roadmap"] ? { roadmap: result["roadmap"] }.to_json : result.to_json
+    @chat.messages.create!(role: "assistant", content: content)
+  end
+
+  def respond_with_success
     respond_to do |format|
       format.turbo_stream
       format.html { redirect_to chat_path(@chat) }
     end
-
-  else
-    render "chats/show", status: :unprocessable_entity
   end
-end
-  private
+
+  def respond_with_error
+    respond_to do |format|
+      format.turbo_stream { render turbo_stream: turbo_stream.replace("flash", partial: "shared/flash") }
+      format.html { render "chats/show", status: :unprocessable_entity }
+    end
+  end
 
   def message_params
     params.require(:message).permit(:content)
   end
-
-  def build_conversation_history
-    @chat.messages.each do |message|
-    @ruby_llm_chat.add_message(message)
-    end
-  end
-
 end

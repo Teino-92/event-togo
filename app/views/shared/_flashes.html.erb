@@ -1,12 +1,30 @@
-<% if notice %>
-  <div class="alert alert-info alert-dismissible fade show m-1" role="alert">
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    <%= notice %>
-  </div>
-<% end %>
-<% if alert %>
-  <div class="alert alert-warning alert-dismissible fade show m-1" role="alert">
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    <%= alert %>
-  </div>
-<% end %>
+<div id="flash" data-controller="flash">
+  <% if notice %>
+    <div class="flash-message flash-success" data-flash-target="message" data-action="click->flash#dismiss" role="alert">
+      <div class="flash-icon">
+        <i class="fas fa-check-circle"></i>
+      </div>
+      <div class="flash-content">
+        <strong>Success!</strong>
+        <p><%= notice %></p>
+      </div>
+      <button type="button" class="flash-close" data-action="click->flash#dismiss" aria-label="Close">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+  <% end %>
+  <% if alert %>
+    <div class="flash-message flash-warning" data-flash-target="message" data-action="click->flash#dismiss" role="alert">
+      <div class="flash-icon">
+        <i class="fas fa-exclamation-triangle"></i>
+      </div>
+      <div class="flash-content">
+        <strong>Warning!</strong>
+        <p><%= alert %></p>
+      </div>
+      <button type="button" class="flash-close" data-action="click->flash#dismiss" aria-label="Close">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+  <% end %>
+</div>
