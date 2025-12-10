@@ -1,0 +1,218 @@
+.form-container {
+  max-width: 700px;
+  margin: 40px auto;
+  position: relative;
+
+  .form-header {
+    text-align: center;
+    margin-bottom: 40px;
+
+    h1 {
+      font-size: 36px;
+      color: $pink;
+      margin-bottom: 15px;
+
+      i {
+        margin-right: 10px;
+        animation: sparkle 2s ease-in-out infinite;
+      }
+    }
+
+    .form-subtitle {
+      font-size: 18px;
+      color: $purple;
+      margin-bottom: 30px;
+    }
+  }
+
+  .progress-container {
+    width: 100%;
+    height: 6px;
+    background: $light-gray;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 30px;
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, $pink 0%, $purple 100%);
+      width: 33.33%;
+      transition: width 0.5s ease;
+      border-radius: 10px;
+    }
+  }
+
+  .animated-form {
+    .form-step {
+      animation: fadeInUp 0.5s ease;
+
+      .step-header {
+        text-align: center;
+        margin-bottom: 30px;
+
+        .step-badge {
+          display: inline-block;
+          background: linear-gradient(135deg, $pink 0%, $purple 100%);
+          color: $white;
+          padding: 8px 20px;
+          border-radius: 20px;
+          font-size: 14px;
+          font-weight: 600;
+          margin-bottom: 15px;
+        }
+
+        h3 {
+          font-size: 24px;
+          color: $blue;
+          margin: 0;
+        }
+      }
+
+      .form-group {
+        margin-bottom: 25px;
+        transition: all 0.3s ease;
+        position: relative;
+
+        &.focused {
+          transform: translateX(5px);
+
+          label {
+            color: $pink;
+            font-weight: 600;
+          }
+
+          input, select, textarea {
+            border-color: $pink;
+            box-shadow: 0 0 0 3px rgba(251, 37, 118, 0.1);
+          }
+        }
+
+        &.filled {
+          label {
+            color: $blue;
+          }
+        }
+
+        label {
+          font-size: 16px;
+          font-weight: 500;
+          color: $purple;
+          margin-bottom: 8px;
+          transition: all 0.3s ease;
+        }
+
+        input, select, textarea {
+          border: 2px solid $light-gray;
+          border-radius: 12px;
+          padding: 12px 16px;
+          font-size: 16px;
+          transition: all 0.3s ease;
+          width: 100%;
+
+          &:hover {
+            border-color: $purple;
+          }
+
+          &:focus {
+            outline: none;
+            border-color: $pink;
+            box-shadow: 0 0 0 3px rgba(251, 37, 118, 0.1);
+          }
+        }
+
+        textarea {
+          resize: vertical;
+          min-height: 100px;
+        }
+
+        select {
+          cursor: pointer;
+        }
+      }
+
+      .form-navigation {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        margin-top: 40px;
+
+        button {
+          min-width: 150px;
+
+          i {
+            transition: transform 0.3s ease;
+          }
+
+          &:hover i {
+            &.fa-arrow-right {
+              transform: translateX(5px);
+            }
+            &.fa-arrow-left {
+              transform: translateX(-5px);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@keyframes sparkle {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+  }
+  25% {
+    transform: scale(1.2) rotate(-10deg);
+  }
+  75% {
+    transform: scale(1.2) rotate(10deg);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.shake-error {
+  animation: shake 0.5s ease;
+
+  input, select, textarea {
+    border-color: $red !important;
+  }
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-10px);
+  }
+  75% {
+    transform: translateX(10px);
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .form-container {
+    .form-header h1 {
+      font-size: 28px;
+    }
+
+    .form-navigation {
+      flex-direction: column;
+
+      button {
+        width: 100%;
+      }
+    }
+  }
+}

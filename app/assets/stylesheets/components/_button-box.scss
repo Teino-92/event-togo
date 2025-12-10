@@ -1,4 +1,3 @@
-
 .button-box {
   align-items: center;
   text-decoration: none;
@@ -38,6 +37,7 @@
   background-color: $white;
   color: $blue;
   box-shadow: $purple 0 0 0 3px, transparent 0 0 0 0;
+  transform: translateY(-2px);
 }
 
 .button-edit {
@@ -45,7 +45,42 @@
   color: $white;
 }
 
+.button-edit:hover {
+  background-color: $white;
+  color: $green;
+  box-shadow: $green 0 0 0 3px, transparent 0 0 0 0;
+}
+
 .button-delete {
   background-color: $red;
   color: $white;
+}
+
+.button-delete:hover {
+  background-color: $white;
+  color: $red;
+  box-shadow: $red 0 0 0 3px, transparent 0 0 0 0;
+}
+
+.button-secondary {
+  background-color: $purple;
+  color: $white;
+}
+
+.button-secondary:hover {
+  background-color: $white;
+  color: $purple;
+  box-shadow: $purple 0 0 0 3px, transparent 0 0 0 0;
+}
+
+.button-small {
+  height: 36px;
+  font-size: 12px;
+  padding: 2px 16px;
+}
+
+.button-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }

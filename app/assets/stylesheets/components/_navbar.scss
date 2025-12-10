@@ -57,6 +57,54 @@ h1 {
   color: $white;
 }
 
+.site-title {
+  font-size: 30px;
+  color: $white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  display: inline-block;
+  margin: 0;
+  padding: 0 10px;
+
+  &:hover {
+    color: $pink;
+    transform: scale(1.1) rotate(-2deg);
+    text-shadow: 0 0 20px rgba(251, 37, 118, 0.6),
+                 0 0 40px rgba(251, 37, 118, 0.4);
+    animation: pulse-glow 1.5s ease-in-out infinite;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    width: 0;
+    height: 3px;
+    background: linear-gradient(90deg, $pink, $purple);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+    border-radius: 2px;
+  }
+
+  &:hover::after {
+    width: 100%;
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    text-shadow: 0 0 20px rgba(251, 37, 118, 0.6),
+                 0 0 40px rgba(251, 37, 118, 0.4);
+  }
+  50% {
+    text-shadow: 0 0 30px rgba(251, 37, 118, 0.8),
+                 0 0 60px rgba(251, 37, 118, 0.6),
+                 0 0 90px rgba(251, 37, 118, 0.4);
+  }
+}
+
 .nav-item {
   font-family: "Philosopher", "sans-serif";
 }

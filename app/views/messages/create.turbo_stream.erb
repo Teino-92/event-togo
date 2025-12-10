@@ -1,7 +1,32 @@
-<%= turbo_stream.append("messages") do %>
-  <%= render @chat.messages.order(:created_at).last(2) %>
-<% end %>
+<% if @message.persisted? %>
+  <%= turbo_stream.remove("ai-loading") %>
 
-<%= turbo_stream.replace("new_message") do %>
-  <%= render "messages/form", chat: @chat %>
+  <%= turbo_stream.append("chat-messages-container") do %>
+    <div data-chat-target="messages">
+      <%= render @chat.messages.order(:created_at).last(2) %>
+    </div>
+  <% end %>
+
+  <%= turbo_stream.replace("new_message") do %>
+    <%= render "messages/form", chat: @chat %>
+  <% end %>
+
+  <turbo-stream action="scroll_to_bottom" target="chat-messages-container">
+    <template></template>
+  </turbo-stream>
+<% else %>
+  <%= turbo_stream.remove("ai-loading") %>
+
+  <%= turbo_stream.replace("new_message") do %>
+    <%= render "messages/form", chat: @chat %>
+  <% end %>
+
+  <%= turbo_stream.replace("flash") do %>
+    <div id="flash">
+      <div class="alert alert-warning alert-dismissible fade show m-1" role="alert">
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <%= @message.errors.full_messages.join(", ") %>
+      </div>
+    </div>
+  <% end %>
 <% end %>

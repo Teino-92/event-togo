@@ -1,11 +1,11 @@
-<div class="navbar navbar-expand-sm navbar-light navbar-lewagon">
+<div class="navbar navbar-expand-sm navbar-light navbar-lewagon" data-controller="navbar">
   <div class="container-fluid">
 
     <%= link_to root_path, class: "navbar-brand" do %>
       <%= image_tag "logo.png", alt: "Logo"  %>
     <% end %>
 
-    <h1 style="color: white;">Event to go</h1>
+    <h1 class="site-title">Event to go</h1>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -20,7 +20,7 @@
             <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               <%= image_tag "account.jpg", class: "avatar rounded-circle me-2", style: "width:30px; height:30px;" %>
             </a>
-            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+            <ul style="border-radius:12px" class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
               <li><%= link_to "See my plans", plans_path, class: "dropdown-item" %></li>
               <li><%= link_to "Log out", destroy_user_session_path, class: "dropdown-item", data: { turbo_method: :delete } %></li>
             </ul>

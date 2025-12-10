@@ -1,26 +1,112 @@
-
-<!-- HEADER -->
-<header class="main_h">
-<%= render "shared/banner" %>
-  <div class="row">
-
+<div data-controller="homepage">
+  <!-- HERO SECTION WITH BANNER -->
+  <div class="hero-banner parallax-container" data-homepage-target="hero">
+    <%= render "shared/banner" %>
+    <div class="hero-overlay">
+      <div class="hero-content">
+        <h1 class="hero-title">Plan better. Enjoy more.</h1>
+        <p class="hero-subtitle pulse-on-load">Smart ideas for every occasion, powered by AI</p>
+        <%= link_to new_plan_path(@plans), class: "button-box button-hero" do %>
+          <i class="fas fa-magic"></i>&nbsp; Create Your Perfect Event
+        <% end %>
+      </div>
+    </div>
   </div>
-</header>
 
-<!-- HERO SECTION -->
-<div class="hero">
-      <h1>Plan better. Enjoy more.</h1>
-       <p>Smart ideas for every occasion.</p>
-</div>
+  <!-- QUICK STATS -->
+  <div class="stats-section" data-homepage-target="section">
+    <div class="container">
+      <div class="row text-center">
+        <div class="col-md-4 stagger-item">
+          <div class="stat-card">
+            <i class="fas fa-robot stat-icon"></i>
+            <h2 class="stat-number">AI</h2>
+            <p class="stat-label">Powered Planning</p>
+          </div>
+        </div>
+        <div class="col-md-4 stagger-item">
+          <div class="stat-card">
+            <i class="fas fa-bolt stat-icon"></i>
+            <h2 class="stat-number">60s</h2>
+            <p class="stat-label">Average Plan Time</p>
+          </div>
+        </div>
+        <div class="col-md-4 stagger-item">
+          <div class="stat-card">
+            <i class="fas fa-map-marked-alt stat-icon"></i>
+            <h2 class="stat-number">100+</h2>
+            <p class="stat-label">Cities Covered</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<!-- TUO CODICE ORIGINALE -->
-<div class="box my-5 sec01">
-  <h1>What is Event to go?</h1>
-  <p>
-    Discover a new way to enjoy your free time. Whether you’re in the mood for a special dinner, a relaxing bike ride through the city, a museum afternoon, or a cozy movie night, you’ll find ideas that are simple to choose and effortless to organize.
-    We want to make it easy to say “yes” to something different — no stress, no endless searching, no indecision. Just clear, curated suggestions that fit your mood and your schedule.
-    Every recommendation is designed to help you try something new or rediscover what’s already around you, turning ordinary moments into memories worth keeping.
-  </p>
+  <!-- HOW IT WORKS -->
+  <div class="box my-4" data-homepage-target="section">
+    <h1 style="margin-bottom: 40px;">How It Works</h1>
+    <div class="row align-items-stretch">
+      <div class="col-md-4 text-center stagger-item d-flex">
+        <div class="step-card">
+          <i class="fas fa-pen-fancy step-icon"></i>
+          <h3>Tell Us Your Vision</h3>
+          <p>Share your event details: theme, location, number of guests, and preferences.</p>
+        </div>
+      </div>
+      <div class="col-md-4 text-center stagger-item d-flex">
+        <div class="step-card">
+          <i class="fas fa-brain step-icon"></i>
+          <h3>AI Creates Your Plan</h3>
+          <p>Our AI analyzes your needs and generates a personalized roadmap in seconds.</p>
+        </div>
+      </div>
+      <div class="col-md-4 text-center stagger-item d-flex">
+        <div class="step-card">
+          <i class="fas fa-check-circle step-icon"></i>
+          <h3>Refine & Enjoy</h3>
+          <p>Chat with AI to adjust details, then save your perfect plan and make it happen!</p>
+        </div>
+      </div>
+    </div>
+  </div>
 
-  <%= link_to 'Start now!', new_plan_path(@plans), class: "button-box" %>
+  <!-- FEATURES SECTION -->
+  <div class="box my-4" data-homepage-target="section" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);">
+    <h1 style="margin-bottom: 40px;">Why Choose Event to go?</h1>
+
+    <div class="row align-items-stretch">
+      <div class="col-md-4 mb-3 stagger-item d-flex" data-homepage-target="feature">
+        <div class="feature-card">
+          <i class="fas fa-star feature-icon"></i>
+          <h3>Personalized Suggestions</h3>
+          <p>Every recommendation is tailored to your group size, budget, and preferences.</p>
+        </div>
+      </div>
+
+      <div class="col-md-4 mb-3 stagger-item d-flex" data-homepage-target="feature">
+        <div class="feature-card">
+          <i class="fas fa-comments feature-icon"></i>
+          <h3>Interactive Refinement</h3>
+          <p>Chat with AI to adjust your plan until it's exactly what you want.</p>
+        </div>
+      </div>
+
+      <div class="col-md-4 mb-3 stagger-item d-flex" data-homepage-target="feature">
+        <div class="feature-card">
+          <i class="fas fa-heart feature-icon"></i>
+          <h3>Memorable Experiences</h3>
+          <p>Turn ordinary moments into unforgettable memories with thoughtful suggestions.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA SECTION -->
+  <div class="cta-section" data-homepage-target="section">
+    <h2>Ready to Create Your Perfect Event?</h2>
+    <p>Join thousands of happy planners who've discovered stress-free event planning.</p>
+    <%= link_to new_plan_path(@plans), class: "button-box button-secondary" do %>
+      <i class="fas fa-rocket"></i>&nbsp; Get Started Now - It's Free!
+    <% end %>
+  </div>
 </div>

@@ -1,125 +1,99 @@
 class PlansController < ApplicationController
+  before_action :set_plan, only: %i[show destroy]
+  before_action :authorize_plan, only: %i[show destroy]
 
   def index
-    @plans = Plan.where(user: current_user).where.not(roadmap: nil)
+    @plans = current_user.plans.where.not(roadmap: nil).order(created_at: :desc)
   end
 
   def new
-    @plans = Plan.new
+    @plan = Plan.new
   end
 
   def create
-    @plan = Plan.new(plan_params)
-    @plan.user = current_user
+    @plan = current_user.plans.build(plan_params)
 
     if @plan.save
-      first_prompt = <<~TEXT
-        Theme: #{@plan.theme}
-        City: #{@plan.city}
-        Context: #{@plan.context}
-        Number of persons: #{@plan.number_persons}
-        Event length: #{@plan.event_lenght}
-        Date: #{@plan.roadmap_date}
-      TEXT
-
-      @chat = @plan.chats.create!(title: "New Roadmap")
-
-      @message = @chat.messages.create!(role: "user", content: first_prompt)
-
-      ruby_llm_chat = RubyLLM.chat
-      ruby_llm_chat.add_message(@message)
-
-      response = ruby_llm_chat.with_instructions(instructions).ask("Can you suggest a plan?")
-
-      @chat.messages.create!(
-      role: "assistant",
-      content: response.content
-      )
-      redirect_to chat_path(@chat)
+      process_new_plan
     else
       render :new, status: :unprocessable_entity
     end
   end
 
   def show
-    @plan = Plan.find(params[:id])
-    @chats = @plan.chats.where(user: current_user)
+    @chats = @plan.chats.order(created_at: :desc)
   end
 
-  def save_roadmap
-  @plan = Plan.find(params[:id])
-
-  roadmap_data = session[:last_roadmap]
-
-  unless roadmap_data.present?
-    redirect_to chat_path(@plan.chats.last), alert: "No roadmap to save."
-    return
+  def destroy
+    @plan.destroy
+    redirect_to plans_path, notice: "Plan deleted successfully."
   end
-
-  @plan.update!(
-    title: roadmap_data["title"],
-    roadmap: roadmap_data.to_json,
-    roadmap_date: @plan.roadmap_date
-  )
-
-  session.delete(:last_roadmap)
-
-  redirect_to plans_path, notice: "Roadmap saved successfully!"
-end
 
   private
 
-  def generate_title_from_first_message
-    first_user_message = @chat.messages.find_by(role: "user")
-    return unless first_user_message
+  def process_new_plan
+    chat = @plan.chats.create!(title: "New Roadmap")
+    generator = RoadmapGeneratorService.new(@plan)
 
-    ruby_llm_chat = RubyLLM.chat
+    result = generator.generate_initial_roadmap
 
+    if result[:error]
+      @plan.destroy
+      Rails.logger.error("Roadmap generation failed: #{result[:error]}")
+      flash[:alert] = "#{result[:error]} This is usually a temporary issue. Please try again in a moment."
+      redirect_to new_plan_path
+      return
+    end
+
+    if result["roadmap"].blank?
+      @plan.destroy
+      Rails.logger.error("Roadmap generation returned no roadmap data")
+      flash[:alert] = "Failed to generate roadmap. Please try again."
+      redirect_to new_plan_path
+      return
+    end
+
+    update_plan_with_result(result)
+    create_initial_messages(chat, result)
+
+    redirect_to chat_path(chat), notice: "Your event plan has been generated! 🎉"
+  rescue StandardError => e
+    Rails.logger.error("Plan creation error: #{e.class} - #{e.message}")
+    Rails.logger.error(e.backtrace.join("\n"))
+    @plan.destroy if @plan.persisted?
+    flash[:alert] = "Failed to create plan: #{e.message}. Please try again."
+    redirect_to new_plan_path
   end
 
+  def update_plan_with_result(result)
+    @plan.update(title: result["title"]) if result["title"].present?
+  end
 
-  def instructions
+  def create_initial_messages(chat, result)
+    user_message_content = build_user_message_content
+    chat.messages.create!(role: "user", content: user_message_content)
+
+    roadmap = result.slice("roadmap")
+    chat.messages.create!(role: "assistant", content: roadmap.to_json) if roadmap.present?
+  end
+
+  def build_user_message_content
     <<~TEXT
-    You are an expert event planner. Based on the user's details, you will create a detailed and structured roadmap for their event.
-    - Generate a short catchy TITLE from the details.
-    - Generate a detailed ROADMAP.
-    - Give a maximum of 3 options per section.
-    - Suggest restaurants, activities, and places.
-    - Always consider:
-      - city
-      - context
-      - number of persons
-      - event length
-      - date
-    - If the theme is "family", include kid-friendly options.
-    - Time rules:
-      - Morning = 8am to 12pm
-      - Afternoon = 2pm to 6pm
-      - Evening = 6pm to 11pm
-    - Include a price range.
-    RULE:
-    You MUST return ONLY valid JSON.
-    NO text outside JSON.
-    NO markdown.
-    JSON FORMAT:
-    { "roadmap": [
-        {
-          "time": string,
-          "title": string,
-          "description": string,
-          "pricing": string,
-          "options": [string]
-        }
-      ]
-    }
-    User details:
-    Theme: #{@plan.theme}
-    City: #{@plan.city}
-    Context: #{@plan.context}
-    Number of persons: #{@plan.number_persons}
-    Event length: #{@plan.event_lenght}
-    Date: #{@plan.roadmap_date}
-  TEXT
+      Theme: #{@plan.theme}
+      City: #{@plan.city}
+      Context: #{@plan.context}
+      Number of persons: #{@plan.number_persons}
+      Event length: #{@plan.event_lenght}
+      Date: #{@plan.roadmap_date}
+    TEXT
+  end
+
+  def set_plan
+    @plan = Plan.find(params[:id])
+  end
+
+  def authorize_plan
+    redirect_to plans_path, alert: "Unauthorized access" unless @plan.user == current_user
   end
 
   def plan_params
@@ -129,7 +103,7 @@ end
       :city,
       :context,
       :event_lenght,
-      :roadmap_dates
+      :roadmap_date
     )
   end
 end
